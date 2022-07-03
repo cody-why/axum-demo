@@ -1,0 +1,45 @@
+@host = http://localhost:3000
+
+### get a shortlink
+GET {{host}}/api/shortlink/1 HTTP/1.1
+#Authorization: {{token}}
+
+### create shortlink
+POST {{host}}/api/shortlink HTTP/1.1
+content-type: application/json
+
+{
+    "url":"http://www.hello.com/"
+}
+
+### update shortlink
+PUT {{host}}/api/shortlink HTTP/1.1
+content-type: application/json
+
+{
+    "id": 4,
+    "url":"http://www.baidu.com/h"
+}
+### delete shortlink
+DELETE {{host}}/api/shortlink HTTP/1.1
+content-type: application/json
+
+{
+    "id": 2
+}
+
+### user
+@token = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwibmFtZSI6ImFkbWluIiwiZXhwIjoxNDMxNDUzMzc2MjI0MDB9.p8kzHlEK0773ue6VutkyoDH9Fcbk3z4QAXmghyQU7jg
+### user login and get token
+POST  {{host}}/api/user/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+### use token to get shomething
+POST  {{host}}/api/user/protected HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{token}}
