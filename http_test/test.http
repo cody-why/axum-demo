@@ -1,7 +1,7 @@
 @host = http://localhost:3000
 
 ### get a shortlink
-GET {{host}}/api/shortlink/1 HTTP/1.1
+GET {{host}}/api/shortlink/5 HTTP/1.1
 #Authorization: {{token}}
 
 ### create shortlink
@@ -9,7 +9,7 @@ POST {{host}}/api/shortlink HTTP/1.1
 content-type: application/json
 
 {
-    "url":"http://www.hello.com/"
+    "url":"http://www.baidu.com/h"
 }
 
 ### update shortlink
@@ -17,10 +17,11 @@ PUT {{host}}/api/shortlink HTTP/1.1
 content-type: application/json
 
 {
-    "id": 4,
-    "url":"http://www.baidu.com/h"
+    "id": 3,
+    "url":"http://www.baidu.com/h2"
 }
 ### delete shortlink
+
 DELETE {{host}}/api/shortlink HTTP/1.1
 content-type: application/json
 

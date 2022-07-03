@@ -1,4 +1,5 @@
-# rust + axum + sqlx + jwt
+# rust + axum + sqlx + redis + jwt
+
 
 ### 表结构
 ```

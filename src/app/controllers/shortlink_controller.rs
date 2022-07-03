@@ -56,8 +56,10 @@ pub async fn delete_shortlink(
     let id = req.id;
     match shortlink::delete_shortlink(&state.pool, id).await {
         Ok(_) => {
-            let mut redis_conn = state.redis_conn.lock().await;
+            // let mut redis_conn = state.redis_conn.lock().await;
+            let mut redis_conn = state.redis_pool.clone();
             let _ = redis_conn.del::<_,()>(&id.to_string()).await;
+
             (StatusCode::OK, Json(shortlinkdto::DeleteShortLinkResp { ok: true }))
         }
         Err(_) => (
@@ -82,9 +84,11 @@ pub async fn get_shortlink(
     let mut url = "/api/not_found".to_string();
     
     let redis_key = format!("url_{}",id);
+    let mut redis_conn = state.redis_pool.clone();
+
     let res: RedisResult<String>;
     {
-        let mut redis_conn = state.redis_conn.lock().await;
+        //let mut redis_conn = state.redis_conn.lock().await;å
         res = redis_conn.get(&redis_key).await;
     }
     // con.set("key", 1); 报错type annotations needed cannot satisfy `_: FromRedisValue`
@@ -106,7 +110,7 @@ pub async fn get_shortlink(
                     }else{
                         record.url
                     };
-                    let mut redis_conn = state.redis_conn.lock().await;
+                    //let mut redis_conn = state.redis_conn.lock().await;
                     let _:RedisResult<()> = redis_conn.set(&redis_key, &url).await;
                 }
                 Err(err) => {
@@ -135,8 +139,9 @@ pub async fn update_shortlink(
 
     let state =  parts.extensions.get::<Arc<State>>().unwrap();
     
-    let mut redis_conn = state.redis_conn.lock().await;
+    // let mut redis_conn = state.redis_conn.lock().await;
     let redis_key = format!("url_{}",req.id);
+    let mut redis_conn = state.redis_pool.clone();
     _=redis_conn.del::<_,()>(redis_key).await;
 
     match shortlink::update_shortlink(&&state.pool, req.id, &req.url).await {
