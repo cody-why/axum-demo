@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 16:34:07
- * @LastEditTime: 2022-07-03 22:37:27
+ * @LastEditTime: 2022-07-04 11:30:23
  * @Descrip&&tion: 
  */
 
@@ -17,7 +17,7 @@ mod app;
 async fn main() -> Result<(), Box<dyn Error>> {
     let config = config::load_config();
 
-    config::init_tracing(&config.log);
+    let _wg = config::init_tracing(&config.log);
     
     tracing::debug!("{:#?}",config);
 

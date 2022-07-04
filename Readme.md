@@ -9,4 +9,3 @@ CREATE TABLE `short_links` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 ```
-
