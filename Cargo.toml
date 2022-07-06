@@ -9,6 +9,7 @@ edition = "2021"
 axum = { version = "0.5" ,features = ["headers"]}
 tokio = { version = "1.19", features = ["full"] }
 sqlx = { version = "0.6", features = ["mysql", "runtime-tokio-native-tls"] }
+redis = "0.21"  
 
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

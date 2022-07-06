@@ -1,13 +1,13 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 16:34:07
- * @LastEditTime: 2022-07-04 11:30:23
+ * @LastEditTime: 2022-07-07 01:55:10
  * @Descrip&&tion: 
  */
 
 use std::error::Error;
 use std::net::SocketAddr;
-
+use dotenv::dotenv;
 
 
 mod config;
@@ -15,6 +15,7 @@ mod app;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    dotenv().ok();
     let config = config::load_config();
 
     let _wg = config::init_tracing(&config.log);
