@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 20:05:55
- * @LastEditTime: 2022-07-04 11:31:25
+ * @LastEditTime: 2022-07-07 02:08:55
  * @Description: 
  */
 
@@ -76,12 +76,11 @@ pub fn init_tracing(config: &LogConfig)-> Option<WorkerGuard> {
 
     // let sub = tracing_subscriber::fmt()
     // .with_max_level(Level::from_str(&config.level).unwrap())
-    // .with_writer(std::io::stdout)
     // .with_writer(non_blocking)
     // .with_target(false)
     // .with_timer(local_time)
     // .with_line_number(true)
-    // .with_file(true);
+    // .with_file(true)
     //.init();
     
 }

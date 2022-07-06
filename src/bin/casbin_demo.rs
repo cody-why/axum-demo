@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-04 13:45:05
- * @LastEditTime: 2022-07-06 16:24:47
+ * @LastEditTime: 2022-07-07 02:04:27
  * @Description: casbin的测试,在线生成规则:
  * https://casbin.org/zh-CN/editor
  */
@@ -11,6 +11,7 @@ use std::collections::HashMap;
 use sqlx_adapter::casbin::prelude::*;
 use sqlx_adapter::casbin::Result; 
 use sqlx_adapter::{casbin::{DefaultModel,Enforcer}, SqlxAdapter};
+use dotenv::dotenv;
 
 #[macro_use]
 extern crate lazy_static;
