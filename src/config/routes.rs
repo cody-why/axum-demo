@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 20:06:13
- * @LastEditTime: 2022-07-03 20:16:01
+ * @LastEditTime: 2022-07-07 01:43:50
  * @Description: 
  */
 
@@ -66,12 +66,10 @@ pub fn short_links() -> Router {
 
 
 /// jwt router
+/// 
 /// post /api/user/login
 /// {"username":"admin","password":"admin"}
-/// post /api/user/register
-/// {"username":"admin","password":"admin"}
-/// post /api/user/logout
-/// {"id":1}
+/// 
 /// post /api/user/protected
 /// {"id":1}
 ///  

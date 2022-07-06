@@ -1,13 +1,15 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 20:49:16
- * @LastEditTime: 2022-07-03 21:58:45
+ * @LastEditTime: 2022-07-07 01:44:44
  * @Description: 全局共享状态
  */
 
 use redis::aio::{ ConnectionManager};
 use sqlx::{Pool, MySql};
 //use tokio::sync::Mutex;
+
+
 
 
 // Some shared state used throughout our application

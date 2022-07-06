@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-07-02 22:12:45
- * @LastEditTime: 2022-07-02 23:16:16
+ * @LastEditTime: 2022-07-07 01:46:24
  * @Description: 
  */
 
@@ -42,7 +42,7 @@ impl Keys {
 ///
 /// 返回: token
 /// 抛出: AuthError
-pub fn encode_claims(claims: &Claims) -> Result<String, AuthError> {
+pub fn encode_claims<T: Serialize>(claims: &T) -> Result<String, AuthError> {
     let token = jwt::encode(&jwt::Header::default(), claims, &KEYS.encoding).map_err(|e| {
         tracing::error!("encode_claims error: {:?}", e);
         AuthError::EncodeError
