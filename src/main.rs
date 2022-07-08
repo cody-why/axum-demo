@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 16:34:07
- * @LastEditTime: 2022-07-07 02:03:45
+ * @LastEditTime: 2022-07-08 21:43:13
  * @Descrip&&tion: 
  */
 
@@ -18,11 +18,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
     dotenv().ok();
     let config = config::load_config();
 
-    let _wg = config::init_tracing(&config.log);
+    let _wg = config::init_log(&config.log);
     
     tracing::debug!("{:#?}",config);
 
-    let state = config::database::init_state(&config).await;
+    let state = config::init_state(&config).await;
 
     let addr = SocketAddr::from(([0, 0, 0, 0], config.server.port));
     tracing::info!("Server bind at: {:?}", addr);

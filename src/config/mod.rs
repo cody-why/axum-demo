@@ -1,7 +1,7 @@
 /*** 
  * @Author: plucky
  * @Date: 2022-06-27 20:05:55
- * @LastEditTime: 2022-07-07 02:08:55
+ * @LastEditTime: 2022-07-08 21:42:59
  * @Description: 
  */
 
@@ -22,6 +22,8 @@ use tracing_subscriber::{
 pub mod routes;
 pub mod database;
 
+pub use database;
+
 const CONFIGFILE: &str = "app.yaml";
 
 pub fn load_config() -> Config {
@@ -29,7 +31,7 @@ pub fn load_config() -> Config {
 
 }
 
-pub fn init_tracing(config: &LogConfig)-> Option<WorkerGuard> {
+pub fn init_log(config: &LogConfig)-> Option<WorkerGuard> {
     //println!("{}",cfg!(unsound_local_offset));
     // 设置输出时间为utc+8:00
     let local_time = OffsetTime::new(
