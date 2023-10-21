@@ -1,12 +1,12 @@
 /*
  * @Author: plucky
  * @Date: 2023-10-19 11:15:43
- * @LastEditTime: 2023-10-20 20:58:22
+ * @LastEditTime: 2023-10-21 11:48:36
  */
 #![allow(unused)]
 use chrono::NaiveDateTime;
 use sqlx::Error;
-use crate::{query_as, config};
+use crate::{query_as, config, query};
 use crate::config::db;
 
 // user module
@@ -15,8 +15,8 @@ pub struct User {
     pub id: u64,
     pub name: String,
     pub password: String,
-    pub created_at: NaiveDateTime,
-    pub updated_at: NaiveDateTime,
+    pub created_at: Option<NaiveDateTime>,
+    pub updated_at: Option<NaiveDateTime>,
 }
 
 impl User {
@@ -24,15 +24,15 @@ impl User {
         id: u64,
         name: String,
         password: String,
-        created_at: NaiveDateTime,
-        
+        created_at: Option<NaiveDateTime>,
+        updated_at: Option<NaiveDateTime>, 
     ) -> Self {
         Self {
             id,
             name,
             password,
             created_at,
-            updated_at:created_at,
+            updated_at,
         }
     }
 
@@ -41,23 +41,11 @@ impl User {
         let users = sqlx::query_as::<_, User>("select * from users").fetch_all(pool).await?;
         Ok(users)
     }
-    
-
-
-    
-    // pub async fn find_by_name2(name: &str) -> Result<User, Error> {
-    //     let pool = db::get_pool()?;
-    //     let user = sqlx::query_as::<_, User>("select * from users where name = ?")
-    //         .bind(name)
-    //         .fetch_one(pool)
-    //         .await?;
-        
-    //     Ok(user)
-    // }
+   
 
     pub async fn find_by_name(name: &str) -> Result<User, Error> {
         let pool = db::get_pool()?;
-        let user = query_as!(User, "select * from users where name = ?", name)
+        let user =query_as!(User, "select * from users where name = ?", name)
             .fetch_one(pool)
             .await?;
         
@@ -66,11 +54,16 @@ impl User {
 
     pub async fn insert(&self) -> Result<u64, Error> {
         let pool = db::get_pool()?;
-        let id = sqlx::query("insert into users (name, password) values (?,?)")
-            .bind(&self.name)
-            .bind(&self.password)
+        let id = query!("insert into users (name, password) values (?,?)", &self.name, &self.password)
             .execute(pool)
             .await?;
+        Ok(id.last_insert_id())
+    }
+
+    pub async fn delete(name: &str) -> Result<u64, Error> {
+        let pool = db::get_pool()?;
+        let id = query!("delete from users where name = ?", name).execute(pool).await?;
+           
         Ok(id.last_insert_id())
     }
     
@@ -105,8 +98,9 @@ async fn test_list() {
 async fn test_find_by_name() {
     let config = config::load_config();
     config::db::init_sql_pool(&config.mysql).await;
+    // User::delete("jack4").await;
 
-    let user = User::find_by_name("plucky").await;
+    let user = User::find_by_name("jack1").await;
     println!("{:?}", user);
 }
 
@@ -118,9 +112,9 @@ async fn test_insert() {
 
     let time= chrono::Utc::now().naive_utc();
     let users = vec![
-        User::new(1, "jack1".to_string(), "123456".to_string(), time),
-        User::new(1, "jack2".to_string(), "123456".to_string(), time),
+        User::new(1, "jack4".to_string(), "123456".to_string(), Some(time), None),
+        // User::new(1, "jack2".to_string(), "123456".to_string(), Some(time), Some(time)),
     ];
-    let user = User::insert_all(users).await;
-    println!("{:?}", user);
+    let id = User::insert_all(users).await;
+    println!("{:?}", id);
 }
