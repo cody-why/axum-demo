@@ -1,0 +1,20 @@
+@host = http://localhost:8080
+
+
+###
+# @name login
+POST {{host}}/api/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "jack",
+    "password": "123456"
+}
+
+###
+# @authToken = {{login.response.body.$.token}}
+# @authToken = {{login.response.headers.auth-token}}
+@authToken = {{login.response.headers.set-cookie}}
+GET  {{host}}/api/check HTTP/1.1
+Cookie: {{authToken}}
+# Authorization: Bearer {{authToken}}

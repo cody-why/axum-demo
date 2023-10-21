@@ -1,0 +1,16 @@
+server:
+ port: 8080
+
+log:
+ level: info,tower_http=debug,axum_demo=debug
+ tofile: false
+
+mysql:
+ #url: mysql://root:newpassword@192.168.1.199:3306/hello
+ url: mysql://root:newpassword@192.168.1.199:3306/hello
+ max_connections: 5
+ min_connections: 1
+
+redis:
+ # url: redis://user:pwd@host:port/db
+ url: redis://:@192.168.1.199/
