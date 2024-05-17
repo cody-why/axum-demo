@@ -1,7 +1,7 @@
 /*
  * @Author: plucky
  * @Date: 2022-09-05 09:23:36
- * @LastEditTime: 2023-10-18 17:26:46
+ * @LastEditTime: 2023-12-11 17:33:20
  * @Description: 
  */
 
@@ -34,9 +34,9 @@ pub fn init_log(config: &LogConfig) {
         .pretty().with_writer(std::io::stderr);
     
     
-    if config.tofile{
+    if config.log_to_file{
         // 输出到文件中
-        let file_appender = tracing_appender::rolling::daily("logs", "web.log");
+        let file_appender = tracing_appender::rolling::daily(&config.file_path, &config.file_name);
         // non_blocking 在非阻塞的线程中输出日志。
         let (non_blocking, _guard) = tracing_appender::non_blocking(file_appender);
         

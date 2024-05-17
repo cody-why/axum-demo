@@ -13,8 +13,13 @@ content-type: application/json
 
 ###
 # @authToken = {{login.response.body.$.token}}
-# @authToken = {{login.response.headers.auth-token}}
-@authToken = {{login.response.headers.set-cookie}}
+@authToken = {{login.response.headers.token}}
 GET  {{host}}/api/check HTTP/1.1
-Cookie: {{authToken}}
+# Cookie: {{authToken}}
 # Authorization: Bearer {{authToken}}
+token: {{authToken}}
+
+###
+GET  {{host}}/menu/query/tree HTTP/1.1
+token: {{authToken}}
+

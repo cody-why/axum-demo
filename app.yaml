@@ -1,16 +1,18 @@
 server:
- port: 8080
+  addr: 127.0.0.1:8080
 
 log:
- level: info,tower_http=debug,axum_demo=debug
- tofile: false
+  level: info,tower_http=debug,axum_demo=debug
+  file_path: logs
+  file_name: app.log
+  log_to_file: false
 
 mysql:
- #url: mysql://root:newpassword@192.168.1.199:3306/hello
- url: mysql://root:newpassword@192.168.1.199:3306/hello
- max_connections: 5
- min_connections: 1
+  #url: mysql://root:789789@192.168.1.199:3306/hello
+  url: mysql://root:789789@192.168.1.199:3306/hello
+  max_connections: 5
+  min_connections: 1
 
 redis:
- # url: redis://user:pwd@host:port/db
- url: redis://:@192.168.1.199/
+  # url: redis://user:pwd@host:port/db
+  url: redis://:@192.168.1.199/

@@ -1,21 +1,24 @@
 /*
  * @Author: plucky
  * @Date: 2023-10-15 12:19:35
- * @LastEditTime: 2023-10-20 21:14:43
+ * @LastEditTime: 2024-02-29 17:35:17
  */
 
 
 use std::net::SocketAddr;
+use tokio::signal;
 use tracing::info;
 
 mod error;
-mod api;
+mod routes;
 mod config;
 mod utils;
+mod middlewares;
+
 
 pub use error::*;
 
-use crate::api::routes;
+use crate::routes::root;
 
 
 #[tokio::main]
@@ -24,27 +27,46 @@ async fn main() {
 
     config::init_log(&config.log);
     info!("{:?}", config);
-    // config::db::init_sql_pool(&config.mysql).await.unwrap();
-    // config::db::init_redis_pool(&config.redis).await.unwrap();
+    config::init_db_pool(&config.mysql).await.unwrap();
+    // config::init_redis_pool(&config.redis).await.unwrap();
     
-    let app = routes::app();
+    let app = root::app();
+    // println!("{:#?}", app);
 
-    let addr = SocketAddr::from(([127,0,0,1], config.server.port));
-    info!("Server listening: {:?}", addr);
+    let addr = config.server.addr.parse::<SocketAddr>().unwrap();
+    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    info!("Server listening: {:?}", listener.local_addr().unwrap());
 
-    axum::Server::bind(&addr)
-        .serve(app.into_make_service())
+    axum::serve(listener, app)
         .with_graceful_shutdown(shutdown_signal())
-        .await.unwrap();
-    
+        .await
+        .unwrap();
    
 }
 
+
+
+
 async fn shutdown_signal() {
-    tokio::signal::ctrl_c()
-        .await
-        .expect("failed to install CTRL+C signal handler");
-    println!("shutting down...");
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("failed to install signal handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {},
+        _ = terminate => {},
+    }
 }
-
-

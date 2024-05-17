@@ -1,12 +1,12 @@
 /*
  * @Author: plucky
  * @Date: 2023-10-20 17:27:54
- * @LastEditTime: 2023-10-21 11:39:11
+ * @LastEditTime: 2023-10-27 21:28:43
  */
 
 /// sqlx::query_as的调用
-/// ```
-/// query_as!(User, "select * from users where name = ?", name)
+/// ``` no_run
+/// query_as!(User, "select * from users where name = ?", name).fetch_one(&pool).await?;
 /// ```
 #[macro_export]
 macro_rules! query_as (
@@ -20,8 +20,8 @@ macro_rules! query_as (
 );
 
 /// sqlx::query的调用
-/// ```
-/// query!("insert into users (name, password) values (?,?)", name, password)
+/// ``` no_run
+/// query!("insert into users (name, password) values (?,?)", name, password).execute(&pool).await?;
 /// ```
 #[macro_export]
 macro_rules! query (
